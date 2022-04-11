@@ -24,6 +24,8 @@ def main():
     datalist=getdata(path)
     print("...")
     sheetpath="豆瓣读书.xls"
+    # savedb="book.db"
+    # savedatadb(datalist,savedb)
     savexls(datalist,sheetpath)
 
 def getdata(path):
@@ -94,6 +96,52 @@ def savexls(datalist,sheetpath):
         for j in range(0, 8):
             sheet.write(i + 1, j, data[j])
     workbook.save(sheetpath)
+
+
+def savedatadb(datalist,savedb):
+    initdb(savedb)
+    conn=sqlite3.connect(savedb)
+    curr=conn.cursor()
+    for item in datalist:
+        for index in range(len(item)):
+            if index==4:
+                continue
+            item[index]='"'+item[index]+'"'
+        sql='''
+        insert into book(
+            info_link,pic_link,cname,oname,score,rated,instroduction,info
+            )values(%s)
+        '''%",".join(item)
+        curr.execute(sql)
+        conn.commit()
+    # curr.execute(sql)
+    curr.execute(sql)
+    conn.close()
+
+
+
+def initdb(savedb):
+    con=sqlite3.connect(savedb)
+    sql = '''
+         create table book
+         (
+         id integer primary key autoincrement,
+         info_link text,
+         pic_link text,
+         cname varchar,
+         oname varchar,
+         score numeric,
+         rated text,
+         instroduction text,
+         info text
+         )
+         '''
+    cur=con.cursor()
+    cur.execute(sql)
+    con.commit()
+    con.close()
+
+
 
 
 if __name__=="__main__":
