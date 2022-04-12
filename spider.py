@@ -22,11 +22,11 @@ findbd=re.compile(r'<p class="pl">(.*?)</p>',re.S)
 def main():
     path="https://book.douban.com/top250?start="
     datalist=getdata(path)
-    print("...")
-    sheetpath="豆瓣读书.xls"
-    # savedb="book.db"
-    # savedatadb(datalist,savedb)
-    savexls(datalist,sheetpath)
+    print(datalist)
+    # sheetpath="豆瓣读书.xls"
+    savedb="book.db"
+    savedatadb(datalist,savedb)
+    # savexls(datalist,sheetpath)
 
 def getdata(path):
     datelist=[]
